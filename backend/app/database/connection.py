@@ -55,3 +55,4 @@ def check_db_connection() -> bool:
     except Exception as exc:
         logger.warning("Không thể kết nối tới CSDL: %s", exc)
         return False
+
