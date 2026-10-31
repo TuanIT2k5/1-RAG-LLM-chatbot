@@ -27,8 +27,8 @@ build/
 develop-eggs/
 eggs/
 .eggs/
-lib/
-lib64/
+backend/lib/
+backend/lib64/
 parts/
 sdist/
 var/
@@ -90,6 +90,9 @@ pnpm-debug.log*
 .pnpm-store/
 .vite/
 *.tsbuildinfo
+frontend/vite.config.js
+frontend/vite.config.d.ts
+~$*.docx
 
 # ==============================================================================
 # IDEs & OS FILES
