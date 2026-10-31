@@ -36,3 +36,4 @@
 - **Document Parsing:** `PyMuPDF` (`fitz`), `python-docx`
 - **Database:** PostgreSQL 16
 - **Frontend:** React 18, TypeScript, Vite, Tailwind CSS, `shadcn/ui`, TanStack Query, Zustand
+
