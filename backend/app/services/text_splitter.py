@@ -182,37 +182,35 @@ class RecursiveTextSplitter:
                     chunks.append(chunk_str)
 
                 # [SP2-05.2] Tạo phần chồng lấp (overlap) từ cuối Chunk vừa đóng gói
-                if self.chunk_overlap > 0:
+                available_overlap = min(
+                    self.chunk_overlap,
+                    max(0, self.chunk_size - piece_tokens),
+                )
+                if available_overlap > 0 and chunk_str:
                     overlap_pieces: List[str] = []
                     overlap_tokens = 0
                     for prev_piece in reversed(current_pieces):
                         prev_t = count_tokens(prev_piece)
-                        if (
-                            overlap_tokens + prev_t <= self.chunk_overlap
-                            or not overlap_pieces
-                            and prev_t < self.chunk_size
-                        ):
-                            if overlap_tokens + prev_t <= self.chunk_overlap:
-                                overlap_pieces.insert(0, prev_piece)
-                                overlap_tokens += prev_t
-                            else:
-                                # Nếu 1 câu đơn lẻ dài hơn chunk_overlap, lấy đúng số từ cuối của câu đó
-                                words = prev_piece.split()
-                                tail_words = words[-self.chunk_overlap :]
-                                tail_str = " ".join(tail_words)
-                                overlap_pieces.insert(0, tail_str)
-                                overlap_tokens = count_tokens(tail_str)
-                                break
+                        if overlap_tokens + prev_t <= available_overlap:
+                            overlap_pieces.insert(0, prev_piece)
+                            overlap_tokens += prev_t
                         else:
+                            # Lấy các từ cuối cùng của prev_piece sao cho tổng token <= available_overlap
+                            remaining_budget = available_overlap - overlap_tokens
+                            if remaining_budget > 0:
+                                words = prev_piece.split()
+                                tail_words: List[str] = []
+                                for w in reversed(words):
+                                    candidate = " ".join([w, *tail_words])
+                                    if count_tokens(candidate) <= remaining_budget:
+                                        tail_words.insert(0, w)
+                                    else:
+                                        break
+                                if tail_words:
+                                    tail_str = " ".join(tail_words)
+                                    overlap_pieces.insert(0, tail_str)
+                                    overlap_tokens += count_tokens(tail_str)
                             break
-
-                    # Đảm bảo overlap_pieces + piece mới không vượt quá chunk_size
-                    while (
-                        overlap_pieces
-                        and (overlap_tokens + piece_tokens) > self.chunk_size
-                    ):
-                        removed = overlap_pieces.pop(0)
-                        overlap_tokens -= count_tokens(removed)
 
                     current_pieces = overlap_pieces
                     current_tokens = sum(count_tokens(p) for p in current_pieces)
