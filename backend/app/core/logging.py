@@ -22,9 +22,10 @@ def setup_logging(log_level: str = "INFO") -> logging.Logger:
     root_logger = logging.getLogger()
     root_logger.setLevel(level)
 
-    # Xóa các handler cũ nếu hàm được gọi lại để tránh nhân bản dòng log
-    if root_logger.handlers:
-        root_logger.handlers.clear()
+    # Chỉ xóa các StreamHandler / RotatingFileHandler cũ do ứng dụng gắn, giữ lại LogCaptureHandler của pytest
+    for existing in list(root_logger.handlers):
+        if existing.__class__.__name__ != "LogCaptureHandler":
+            root_logger.removeHandler(existing)
 
     # 1. Console Handler (stdout với UTF-8)
     console_stream = (
