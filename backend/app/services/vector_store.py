@@ -211,6 +211,81 @@ class VectorStore:
             items.append({"chunk_id": cid, "text": doc, "metadata": restore_metadata(meta)})
         return items
 
+    def query_similar(
+        self,
+        query_embedding: Sequence[float],
+        n_results: int = 5,
+        where: Optional[Dict[str, Any]] = None,
+    ) -> List[Dict[str, Any]]:
+        """
+        Truy vấn các Chunk có vector gần nhất theo khoảng cách Cosine trong ChromaDB.
+        Trả về danh sách dict gồm: chunk_id, text, metadata (đã khôi phục None), distance.
+        """
+        total_in_collection = self.count()
+        if total_in_collection == 0 or n_results <= 0:
+            return []
+
+        effective_n = min(max(1, n_results), total_in_collection)
+        query_kwargs: Dict[str, Any] = {
+            "query_embeddings": [[float(x) for x in query_embedding]],
+            "n_results": effective_n,
+            "include": ["documents", "metadatas", "distances"],
+        }
+        if where:
+            query_kwargs["where"] = where
+
+        raw_res = self.collection.query(**query_kwargs)
+        ids_list = (raw_res.get("ids") or [[]])[0]
+        docs_list = (raw_res.get("documents") or [[]])[0]
+        metas_list = (raw_res.get("metadatas") or [[]])[0]
+        dists_list = (raw_res.get("distances") or [[]])[0]
+
+        results: List[Dict[str, Any]] = []
+        for cid, doc_text, meta, dist in zip(
+            ids_list, docs_list, metas_list, dists_list
+        ):
+            results.append(
+                {
+                    "chunk_id": str(cid),
+                    "text": str(doc_text or ""),
+                    "metadata": restore_metadata(meta),
+                    "distance": float(dist),
+                }
+            )
+        return results
+
+    def count_by_document_id(self, document_id: Union[str, Any]) -> int:
+        """
+        [SP3-05.2] Kiểm tra và trả về số lượng Chunk hiện có của một tài liệu
+        trong ChromaDB để phục vụ đối soát dữ liệu.
+        """
+        doc_id_str = str(document_id)
+        result = self.collection.get(
+            where={"document_id": doc_id_str},
+            include=[],
+        )
+        ids = result.get("ids") or []
+        return len(ids)
+
+    def delete_by_document_id(self, document_id: Union[str, Any]) -> int:
+        """
+        [SP3-05.1] Xóa toàn bộ các Chunk có metadata document_id tương ứng khỏi ChromaDB.
+        Trả về số lượng Chunk đã bị xóa và đối soát lại số lượng còn lại = 0.
+        """
+        doc_id_str = str(document_id)
+        existing_count = self.count_by_document_id(doc_id_str)
+        if existing_count > 0:
+            self.collection.delete(where={"document_id": doc_id_str})
+            remaining = self.count_by_document_id(doc_id_str)
+            logger.info(
+                "Đã xóa %d Chunks của document_id='%s' khỏi ChromaDB collection '%s' (remaining=%d).",
+                existing_count,
+                doc_id_str,
+                self.collection_name,
+                remaining,
+            )
+        return existing_count
+
     def reset_collection(self) -> None:
         """Xóa toàn bộ dữ liệu và tạo lại Collection rỗng (chỉ dùng cho kiểm thử/bảo trì)."""
         self.client.delete_collection(name=self.collection_name)
@@ -234,4 +309,28 @@ def get_vector_store() -> VectorStore:
             if _vector_store_instance is None:
                 _vector_store_instance = VectorStore()
     return _vector_store_instance
+
+
+def count_by_document_id(
+    document_id: Union[str, Any],
+    vector_store: Optional[VectorStore] = None,
+) -> int:
+    """
+    [SP3-05.2] Hàm tiện ích cấp mô-đun kiểm tra số lượng Chunk hiện có của một tài liệu
+    trong ChromaDB phục vụ đối soát dữ liệu.
+    """
+    store = vector_store or get_vector_store()
+    return store.count_by_document_id(document_id)
+
+
+def delete_by_document_id(
+    document_id: Union[str, Any],
+    vector_store: Optional[VectorStore] = None,
+) -> int:
+    """
+    [SP3-05.1] Hàm tiện ích cấp mô-đun xóa toàn bộ các Chunk có metadata document_id
+    tương ứng khỏi ChromaDB.
+    """
+    store = vector_store or get_vector_store()
+    return store.delete_by_document_id(document_id)
 

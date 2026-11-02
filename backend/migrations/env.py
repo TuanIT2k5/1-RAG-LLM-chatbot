@@ -13,9 +13,9 @@ config = context.config
 # Ghi đè sqlalchemy.url bằng giá trị thực tế từ settings.DATABASE_URL
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 
-# Thiết lập logging cho Alembic
+# Thiết lập logging cho Alembic (không vô hiệu hóa các logger của ứng dụng)
 if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+    fileConfig(config.config_file_name, disable_existing_loggers=False)
 
 target_metadata = Base.metadata
 
