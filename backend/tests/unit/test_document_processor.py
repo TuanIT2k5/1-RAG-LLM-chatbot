@@ -1,11 +1,12 @@
 from pathlib import Path
 import uuid
 
+import docx
 import pymupdf as fitz
 import pytest
 
 from app.core.exceptions import EmptyDocumentException, ExtractionFailedException
-from app.services.document_processor import extract_pdf
+from app.services.document_processor import extract_document, extract_docx, extract_pdf
 
 
 def create_sample_pdf(
@@ -51,7 +52,6 @@ def test_extract_pdf_preserves_exact_page_numbers_and_metadata(tmp_path: Path) -
         filename="Bo_luat_2019.pdf",
     )
 
-    # Trang 2 trống nên chỉ trả về trang 1 và trang 3 với page_number chính xác
     assert len(results) == 2
 
     assert results[0].page_number == 1
@@ -69,7 +69,6 @@ def test_extract_pdf_corrupted_or_encrypted_raises_extraction_failed(
     tmp_path: Path,
 ) -> None:
     """[SP2-02.1] Tệp PDF hỏng cấu trúc hoặc cài mật khẩu phải trả về EXTRACTION_FAILED."""
-    # 1. Tệp hỏng cấu trúc
     corrupted_pdf = tmp_path / "corrupted.pdf"
     corrupted_pdf.write_bytes(b"%PDF-1.7\nInvalid corrupted binary data")
 
@@ -77,7 +76,6 @@ def test_extract_pdf_corrupted_or_encrypted_raises_extraction_failed(
         extract_pdf(corrupted_pdf, document_id=uuid.uuid4())
     assert exc_corrupt.value.error_code == "EXTRACTION_FAILED"
 
-    # 2. Tệp khóa mật khẩu
     encrypted_pdf = create_sample_pdf(
         tmp_path / "locked.pdf",
         ["Secret page content"],
@@ -101,3 +99,80 @@ def test_extract_pdf_scanned_or_blank_raises_empty_document(tmp_path: Path) -> N
     assert exc_empty.value.error_code == "EMPTY_DOCUMENT"
     assert exc_empty.value.details.get("flag") == "EMPTY_DOCUMENT"
 
+
+def test_extract_docx_paragraphs_headings_and_tables(tmp_path: Path) -> None:
+    """[SP2-03.1 -> SP2-03.4 & TC-02] Trích xuất DOCX có Heading, đoạn văn và bảng biểu."""
+    docx_file = tmp_path / "noi_quy_cong_ty.docx"
+    word_doc = docx.Document()
+
+    # Mục 1: Heading 1 + đoạn văn
+    word_doc.add_heading("Chương 1: Quy định chung", level=1)
+    word_doc.add_paragraph("Thời gian làm việc từ thứ Hai đến thứ Sáu hằng tuần.")
+
+    # Mục 2: Heading 2 + bảng biểu + đoạn văn
+    word_doc.add_heading("Điều 2: Chế độ nghỉ phép", level=2)
+    table = word_doc.add_table(rows=2, cols=2)
+    table.cell(0, 0).text = "Thâm niên"
+    table.cell(0, 1).text = "Số ngày phép"
+    table.cell(1, 0).text = "Đủ 12 tháng"
+    table.cell(1, 1).text = "12 ngày"
+
+    word_doc.add_paragraph("Nhân viên đăng ký nghỉ phép trước ít nhất 02 ngày.")
+    word_doc.save(str(docx_file))
+
+    doc_id = uuid.uuid4()
+    units = extract_docx(
+        file_path=docx_file,
+        document_id=doc_id,
+        filename="Noi_quy_Cong_ty.docx",
+    )
+
+    assert len(units) == 5
+
+    # Đoạn 1: Heading 1
+    assert units[0].paragraph_index == 1
+    assert units[0].section_title == "Chương 1: Quy định chung"
+    assert units[0].filename == "Noi_quy_Cong_ty.docx"
+    assert units[0].document_id == str(doc_id)
+    assert units[0].source_type == "docx"
+
+    # Đoạn 2: Kế thừa section_title từ Heading 1
+    assert units[1].paragraph_index == 2
+    assert units[1].section_title == "Chương 1: Quy định chung"
+    assert "thứ Hai đến thứ Sáu" in units[1].text
+
+    # Đoạn 3: Heading 2 cập nhật section_title mới
+    assert units[2].paragraph_index == 3
+    assert units[2].section_title == "Điều 2: Chế độ nghỉ phép"
+
+    # Đoạn 4: Bảng biểu kế thừa section_title từ Heading 2
+    assert units[3].paragraph_index == 4
+    assert units[3].section_title == "Điều 2: Chế độ nghỉ phép"
+    assert "Thâm niên | Số ngày phép" in units[3].text
+    assert "Đủ 12 tháng | 12 ngày" in units[3].text
+
+    # Đoạn 5: Đoạn văn sau bảng
+    assert units[4].paragraph_index == 5
+    assert units[4].section_title == "Điều 2: Chế độ nghỉ phép"
+    assert "trước ít nhất 02 ngày" in units[4].text
+
+
+def test_extract_docx_empty_and_corrupted(tmp_path: Path) -> None:
+    """Kiểm tra tệp DOCX rỗng (EMPTY_DOCUMENT) và tệp DOCX hỏng (EXTRACTION_FAILED)."""
+    # 1. Tệp DOCX trắng không có chữ
+    empty_docx = tmp_path / "empty.docx"
+    doc = docx.Document()
+    doc.add_paragraph("   ")
+    doc.save(str(empty_docx))
+
+    with pytest.raises(EmptyDocumentException) as exc_empty:
+        extract_document(empty_docx, document_id=uuid.uuid4())
+    assert exc_empty.value.error_code == "EMPTY_DOCUMENT"
+
+    # 2. Tệp DOCX hỏng cấu trúc
+    bad_docx = tmp_path / "corrupted.docx"
+    bad_docx.write_bytes(b"PK\x03\x04 corrupted zip content")
+
+    with pytest.raises(ExtractionFailedException) as exc_bad:
+        extract_docx(bad_docx, document_id=uuid.uuid4())
+    assert exc_bad.value.error_code == "EXTRACTION_FAILED"
