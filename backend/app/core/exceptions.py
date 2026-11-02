@@ -66,6 +66,22 @@ class EmptyDocumentException(AppException):
         )
 
 
+class ExtractionFailedException(AppException):
+    """Lỗi không thể đọc cấu trúc tệp PDF/DOCX (tệp bị hỏng hoặc đặt mật khẩu)."""
+
+    def __init__(
+        self,
+        message: str = "Không thể đọc nội dung tệp. Tệp có thể bị hỏng cấu trúc hoặc đang được bảo vệ bằng mật khẩu.",
+        details: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        super().__init__(
+            error_code="EXTRACTION_FAILED",
+            message=message,
+            status_code=422,
+            details=details,
+        )
+
+
 class DocumentNotFoundException(AppException):
     """Lỗi không tìm thấy tài liệu theo ID."""
 
@@ -96,4 +112,3 @@ class LLMServiceException(AppException):
             status_code=503,
             details=details,
         )
-
