@@ -24,6 +24,9 @@ logger = get_logger(__name__)
 # Kích thước mỗi khối đọc theo luồng (64KB)
 STREAM_CHUNK_SIZE = 64 * 1024
 
+PDF_MIME = "application/pdf"
+DOCX_MIME = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+
 # Ánh xạ phần mở rộng hợp lệ sang tập MIME type chuẩn ([SP2-01.1])
 ALLOWED_MIME_TYPES: Dict[str, Set[str]] = {
     ".pdf": {
