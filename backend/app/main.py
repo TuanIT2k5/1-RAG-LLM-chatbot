@@ -6,6 +6,9 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from app.api.routes.chat_routes import router as chat_router
+from app.api.routes.conversation_routes import router as conversation_router
+from app.api.routes.document_routes import router as document_router
 from app.api.routes.health_routes import router as health_router
 from app.core.config import BACKEND_DIR, settings
 from app.core.exceptions import AppException
@@ -84,6 +87,9 @@ def create_app() -> FastAPI:
 
     # Đăng ký các Routers dưới tiền tố /api
     app.include_router(health_router, prefix="/api")
+    app.include_router(document_router, prefix="/api")
+    app.include_router(chat_router, prefix="/api")
+    app.include_router(conversation_router, prefix="/api")
 
     @app.get("/", tags=["Root"], summary="Trang chào mừng API")
     async def root() -> dict:
