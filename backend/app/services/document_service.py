@@ -33,12 +33,14 @@ class DocumentService:
         embedding_service: Optional[EmbeddingService] = None,
         vector_store: Optional[VectorStore] = None,
         text_splitter: Optional[RecursiveTextSplitter] = None,
+        default_upload_dir: Optional[Path] = None,
     ) -> None:
         self.db = db
         self.document_repo = DocumentRepository(db)
         self.embedding_service = embedding_service or get_embedding_service()
         self.vector_store = vector_store or get_vector_store()
         self.text_splitter = text_splitter or RecursiveTextSplitter()
+        self.default_upload_dir = default_upload_dir
 
     def index_document(self, document: Document) -> Document:
         """
@@ -172,6 +174,7 @@ class DocumentService:
         [SP3-03.1] Tiếp nhận tệp tải lên, kiểm tra hợp lệ, lưu tệp vật lý <uuid>.<ext>,
         tạo bản ghi 'processing' và chạy ngay đường ống Indexing Pipeline.
         """
+        effective_upload_dir = upload_dir or self.default_upload_dir
         document = validate_and_register_document(
             db=self.db,
             upload_file=upload_file,
@@ -179,7 +182,7 @@ class DocumentService:
             content_type=content_type,
             user_id=user_id,
             max_size_bytes=max_size_bytes,
-            upload_dir=upload_dir,
+            upload_dir=effective_upload_dir,
         )
         return self.index_document(document)
 
@@ -196,6 +199,17 @@ class DocumentService:
             status=status,
             skip=skip,
             limit=limit,
+        )
+
+    def count_documents(
+        self,
+        user_id: Optional[uuid.UUID] = None,
+        status: Optional[str] = None,
+    ) -> int:
+        """Đếm tổng số lượng tài liệu trong PostgreSQL thỏa mãn điều kiện lọc."""
+        return self.document_repo.count_documents(
+            user_id=user_id,
+            status=status,
         )
 
     def get_document(self, document_id: uuid.UUID) -> Document:

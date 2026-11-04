@@ -98,6 +98,22 @@ class DocumentNotFoundException(AppException):
         )
 
 
+class ConversationNotFoundException(AppException):
+    """Lỗi không tìm thấy phiên hội thoại theo ID."""
+
+    def __init__(
+        self,
+        conversation_id: str,
+        details: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        super().__init__(
+            error_code="CONVERSATION_NOT_FOUND",
+            message=f"Không tìm thấy phiên hội thoại với mã định danh '{conversation_id}'.",
+            status_code=404,
+            details=details,
+        )
+
+
 class LLMServiceException(AppException):
     """Lỗi kết nối hoặc quá thời gian chờ từ dịch vụ LLM."""
 

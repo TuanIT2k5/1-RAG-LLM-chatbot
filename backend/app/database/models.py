@@ -274,3 +274,15 @@ class MessageSource(Base):
         back_populates="message_sources",
     )
 
+    @property
+    def source_id(self) -> str:
+        """Tương thích trực tiếp với trường source_id của Pydantic SourceCitation."""
+        return self.source_label
+
+    @property
+    def filename(self) -> str:
+        """Lấy tên tệp gốc từ quan hệ Document phục vụ hiển thị lịch sử trích dẫn."""
+        if self.document is not None and self.document.filename:
+            return self.document.filename
+        return "unknown"
+

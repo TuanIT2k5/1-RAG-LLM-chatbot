@@ -140,25 +140,29 @@ def sample_files() -> Dict[str, Path]:
     """
     Fixture khởi tạo bộ 4 tệp mẫu kiểm thử chuẩn trong backend/tests/fixtures/
     phục vụ [SP2-06.1 -> SP2-06.4] và nghiệm thu Sprint 2.
+    Chỉ tạo lại tệp nếu tệp chưa tồn tại trên đĩa để tránh làm bẩn git status.
     """
     FIXTURES_DIR.mkdir(parents=True, exist_ok=True)
-    pdf_25_pages = generate_sample_25page_vietnamese_pdf(
-        FIXTURES_DIR / "sample_vietnamese_25pages.pdf"
-    )
-    docx_with_table = generate_sample_vietnamese_docx(
-        FIXTURES_DIR / "sample_vietnamese_headings_tables.docx"
-    )
-    empty_pdf = generate_sample_empty_scanned_pdf(
-        FIXTURES_DIR / "sample_empty_scanned.pdf"
-    )
-    invalid_file = generate_sample_invalid_format_file(
-        FIXTURES_DIR / "sample_invalid_spoofed.pdf"
-    )
+    pdf_25_path = FIXTURES_DIR / "sample_vietnamese_25pages.pdf"
+    if not pdf_25_path.exists():
+        generate_sample_25page_vietnamese_pdf(pdf_25_path)
+
+    docx_path = FIXTURES_DIR / "sample_vietnamese_headings_tables.docx"
+    if not docx_path.exists():
+        generate_sample_vietnamese_docx(docx_path)
+
+    empty_pdf_path = FIXTURES_DIR / "sample_empty_scanned.pdf"
+    if not empty_pdf_path.exists():
+        generate_sample_empty_scanned_pdf(empty_pdf_path)
+
+    invalid_file_path = FIXTURES_DIR / "sample_invalid_spoofed.pdf"
+    if not invalid_file_path.exists():
+        generate_sample_invalid_format_file(invalid_file_path)
 
     return {
-        "pdf_25_pages": pdf_25_pages,
-        "docx_with_table": docx_with_table,
-        "empty_pdf": empty_pdf,
-        "invalid_file": invalid_file,
+        "pdf_25_pages": pdf_25_path,
+        "docx_with_table": docx_path,
+        "empty_pdf": empty_pdf_path,
+        "invalid_file": invalid_file_path,
     }
 
