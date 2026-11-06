@@ -11,6 +11,7 @@ export interface IDocument {
   chunk_count: number;
   error_message?: string | null;
   created_at: string;
+  updated_at?: string | null;
 }
 
 export interface ICitationSource {
@@ -38,6 +39,7 @@ export interface IConversation {
   user_id?: string | null;
   title: string;
   created_at: string;
+  updated_at?: string | null;
 }
 
 export interface IHealthStatus {

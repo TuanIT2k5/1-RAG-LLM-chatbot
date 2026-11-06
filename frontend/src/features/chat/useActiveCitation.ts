@@ -26,11 +26,46 @@ export const SAMPLE_CITATIONS: ICitationSource[] = [
 
 interface ActiveCitationState {
   activeCitation: ICitationSource | null;
-  setActiveCitation: (citation: ICitationSource | null) => void;
+  activeMessageSources: ICitationSource[];
+  isSourcePanelOpen: boolean;
+  setActiveCitation: (
+    citation: ICitationSource | null,
+    allSourcesInMessage?: ICitationSource[]
+  ) => void;
+  openCitation: (
+    citation: ICitationSource,
+    allSourcesInMessage?: ICitationSource[]
+  ) => void;
+  closeSourcePanel: () => void;
+  toggleSourcePanel: () => void;
 }
 
 export const useActiveCitation = create<ActiveCitationState>((set) => ({
   activeCitation: SAMPLE_CITATIONS[0],
-  setActiveCitation: (citation) => set({ activeCitation: citation }),
-}));
+  activeMessageSources: SAMPLE_CITATIONS,
+  isSourcePanelOpen: true,
 
+  setActiveCitation: (citation, allSourcesInMessage) =>
+    set((state) => ({
+      activeCitation: citation,
+      activeMessageSources:
+        allSourcesInMessage ??
+        (citation ? state.activeMessageSources : []),
+      isSourcePanelOpen: citation !== null ? true : state.isSourcePanelOpen,
+    })),
+
+  openCitation: (citation, allSourcesInMessage) =>
+    set((state) => ({
+      activeCitation: citation,
+      activeMessageSources:
+        allSourcesInMessage && allSourcesInMessage.length > 0
+          ? allSourcesInMessage
+          : state.activeMessageSources,
+      isSourcePanelOpen: true,
+    })),
+
+  closeSourcePanel: () => set({ isSourcePanelOpen: false }),
+
+  toggleSourcePanel: () =>
+    set((state) => ({ isSourcePanelOpen: !state.isSourcePanelOpen })),
+}));
