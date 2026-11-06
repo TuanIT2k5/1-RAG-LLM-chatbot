@@ -1,9 +1,12 @@
+from pathlib import Path
 from typing import Optional
 import uuid
 
 from fastapi import APIRouter, Depends, File, Query, UploadFile, status
+from fastapi.responses import FileResponse
 
 from app.api.deps import get_document_service
+from app.core.exceptions import DocumentNotFoundException
 from app.schemas.document_schema import (
     DocumentDeleteResponse,
     DocumentListResponse,
@@ -100,6 +103,37 @@ def get_document_detail(
     """
     doc = document_service.get_document(document_id)
     return DocumentResponse.model_validate(doc)
+
+
+@router.get(
+    "/{document_id}/file",
+    status_code=status.HTTP_200_OK,
+    summary="Mở xem trực tiếp tệp PDF/DOCX gốc để đối chiếu trang trích dẫn",
+)
+def get_document_file(
+    document_id: uuid.UUID,
+    document_service: DocumentService = Depends(get_document_service),
+) -> FileResponse:
+    """
+    [SP5-04.4] Trả về tệp vật lý gốc (inline) để trình duyệt mở xem nhanh đúng số trang PDF
+    thông qua neo #page=<page_number>.
+    """
+    doc = document_service.get_document(document_id)
+    file_path = Path(doc.storage_path)
+    if not file_path.exists():
+        raise DocumentNotFoundException(document_id=str(document_id))
+
+    media_type = (
+        "application/pdf"
+        if doc.file_type == "pdf"
+        else "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    )
+    return FileResponse(
+        path=str(file_path),
+        media_type=media_type,
+        filename=doc.filename,
+        content_disposition_type="inline",
+    )
 
 
 @router.delete(

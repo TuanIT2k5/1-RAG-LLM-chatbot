@@ -46,7 +46,7 @@ class Settings(BaseSettings):
     # 3. Cấu hình Mô hình AI & RAG
     LLM_PROVIDER: str = Field(default="gemini")
     LLM_API_KEY: str = Field(default="your_api_key_here")
-    LLM_MODEL: str = Field(default="gemini-2.5-flash")
+    LLM_MODEL: str = Field(default="gemini-3.8-flash")
     LLM_TEMPERATURE: float = Field(default=0.1, ge=0.0, le=2.0)
     LLM_TIMEOUT_SECONDS: float = Field(default=30.0, ge=1.0, le=120.0)
     LLM_MAX_RETRIES: int = Field(default=2, ge=0, le=5)

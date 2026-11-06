@@ -1,23 +1,6 @@
 import { create } from "zustand";
 import type { IDocument } from "@/types";
 
-interface DocumentsState {
-  selectedDocumentIds: string[];
-  toggleDocumentSelection: (id: string) => void;
-  setSelectedDocumentIds: (ids: string[]) => void;
-}
-
-export const useDocumentsStore = create<DocumentsState>((set) => ({
-  selectedDocumentIds: ["doc-demo-1"],
-  toggleDocumentSelection: (id) =>
-    set((state) => ({
-      selectedDocumentIds: state.selectedDocumentIds.includes(id)
-        ? state.selectedDocumentIds.filter((item) => item !== id)
-        : [...state.selectedDocumentIds, id],
-    })),
-  setSelectedDocumentIds: (ids) => set({ selectedDocumentIds: ids }),
-}));
-
 export const SAMPLE_DOCUMENTS: IDocument[] = [
   {
     id: "doc-demo-1",
@@ -51,3 +34,96 @@ export const SAMPLE_DOCUMENTS: IDocument[] = [
   },
 ];
 
+interface DocumentsState {
+  documents: IDocument[];
+  selectedDocumentIds: string[];
+  isLoadingDocuments: boolean;
+  isUploading: boolean;
+  uploadModalOpen: boolean;
+  setDocuments: (docs: IDocument[]) => void;
+  addDocument: (doc: IDocument) => void;
+  updateDocument: (id: string, patch: Partial<IDocument>) => void;
+  removeDocument: (id: string) => void;
+  toggleDocumentSelection: (id: string) => void;
+  setSelectedDocumentIds: (ids: string[]) => void;
+  selectAllProcessedDocuments: () => void;
+  clearDocumentSelection: () => void;
+  setIsLoadingDocuments: (loading: boolean) => void;
+  setIsUploading: (uploading: boolean) => void;
+  setUploadModalOpen: (open: boolean) => void;
+}
+
+export const useDocumentsStore = create<DocumentsState>((set) => ({
+  documents: SAMPLE_DOCUMENTS,
+  selectedDocumentIds: ["doc-demo-1", "doc-demo-2"],
+  isLoadingDocuments: false,
+  isUploading: false,
+  uploadModalOpen: false,
+
+  setDocuments: (docs) =>
+    set((state) => {
+      const validIds = new Set(
+        docs.filter((d) => d.status === "processed").map((d) => d.id)
+      );
+      const filteredSelection = state.selectedDocumentIds.filter((id) =>
+        validIds.has(id)
+      );
+      return {
+        documents: docs,
+        selectedDocumentIds: filteredSelection,
+      };
+    }),
+
+  addDocument: (doc) =>
+    set((state) => ({
+      documents: [doc, ...state.documents.filter((item) => item.id !== doc.id)],
+      selectedDocumentIds:
+        doc.status === "processed" &&
+        !state.selectedDocumentIds.includes(doc.id)
+          ? [...state.selectedDocumentIds, doc.id]
+          : state.selectedDocumentIds,
+    })),
+
+  updateDocument: (id, patch) =>
+    set((state) => ({
+      documents: state.documents.map((doc) =>
+        doc.id === id ? { ...doc, ...patch } : doc
+      ),
+    })),
+
+  removeDocument: (id) =>
+    set((state) => ({
+      documents: state.documents.filter((doc) => doc.id !== id),
+      selectedDocumentIds: state.selectedDocumentIds.filter(
+        (item) => item !== id
+      ),
+    })),
+
+  toggleDocumentSelection: (id) =>
+    set((state) => {
+      const target = state.documents.find((d) => d.id === id);
+      if (target && target.status !== "processed") {
+        return state;
+      }
+      return {
+        selectedDocumentIds: state.selectedDocumentIds.includes(id)
+          ? state.selectedDocumentIds.filter((item) => item !== id)
+          : [...state.selectedDocumentIds, id],
+      };
+    }),
+
+  setSelectedDocumentIds: (ids) => set({ selectedDocumentIds: ids }),
+
+  selectAllProcessedDocuments: () =>
+    set((state) => ({
+      selectedDocumentIds: state.documents
+        .filter((d) => d.status === "processed")
+        .map((d) => d.id),
+    })),
+
+  clearDocumentSelection: () => set({ selectedDocumentIds: [] }),
+
+  setIsLoadingDocuments: (loading) => set({ isLoadingDocuments: loading }),
+  setIsUploading: (uploading) => set({ isUploading: uploading }),
+  setUploadModalOpen: (open) => set({ uploadModalOpen: open }),
+}));

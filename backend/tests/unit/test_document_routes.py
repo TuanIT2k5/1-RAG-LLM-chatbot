@@ -157,6 +157,13 @@ def test_sp4_04_document_lifecycle_apis(
         physical_pdf_path = Path(detail_data["storage_path"])
         assert physical_pdf_path.exists()
 
+        # [SP5-04.4] Kiểm tra GET /api/documents/{id}/file trả về tệp PDF inline để đối chiếu trang
+        resp_file = client.get(f"/api/documents/{pdf_id}/file")
+        assert resp_file.status_code == 200
+        assert resp_file.headers["content-type"] == "application/pdf"
+        assert "inline" in resp_file.headers.get("content-disposition", "")
+        assert len(resp_file.content) == len(pdf_bytes)
+
         # Kiểm tra 404 khi ID không tồn tại
         random_id = uuid.uuid4()
         resp_not_found = client.get(f"/api/documents/{random_id}")

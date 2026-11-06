@@ -98,7 +98,7 @@ class LLMService:
         self.api_key = (
             api_key if api_key is not None else settings.LLM_API_KEY
         ).strip()
-        self.model = (model or settings.LLM_MODEL or "gemini-2.5-flash").strip()
+        self.model = (model or settings.LLM_MODEL or "gemini-3.8-flash").strip()
 
         # [SP4-02.1] Giữ Temperature thấp (mặc định 0.1, trong dải ổn định 0.0 - 0.2)
         raw_temp = (
