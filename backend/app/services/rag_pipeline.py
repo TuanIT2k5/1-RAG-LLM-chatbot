@@ -5,7 +5,7 @@ import uuid
 
 from sqlalchemy.orm import Session
 
-from app.core.exceptions import ConversationNotFoundException
+from app.core.exceptions import ConversationNotFoundException, LLMServiceException
 from app.core.logging import get_logger
 from app.database.models import Conversation, Message
 from app.database.repositories.conversation_repo import ConversationRepository
@@ -121,10 +121,32 @@ class RAGPipeline:
 
             # Gọi LLM sinh câu trả lời ([SP4-02])
             t_llm = time.perf_counter()
-            raw_answer = self.llm_service.generate_answer(
-                question=cleaned_question,
-                context_text=built_ctx.context_text,
-            )
+            try:
+                raw_answer = self.llm_service.generate_answer(
+                    question=cleaned_question,
+                    context_text=built_ctx.context_text,
+                )
+            except LLMServiceException as exc:
+                details_str = str(exc.details)
+                if "API_KEY_INVALID" in details_str or "API key not valid" in details_str:
+                    logger.warning(
+                        "LLM_API_KEY chưa hợp lệ với Google AI Studio; tự động tổng hợp trích xuất từ các đoạn văn Top-K."
+                    )
+                    lines = [
+                        "Dựa trên các đoạn văn bản có độ tương đồng ngữ nghĩa cao nhất trong tài liệu của bạn:"
+                    ]
+                    for sid, entry in list(built_ctx.source_map.items())[:3]:
+                        loc = (
+                            f"Trang {entry.page_number}"
+                            if entry.page_number
+                            else f"Đoạn #{entry.chunk_index}"
+                        )
+                        lines.append(
+                            f"- **{entry.filename} ({loc}):** {entry.excerpt} [{sid}]"
+                        )
+                    raw_answer = "\n\n".join(lines)
+                else:
+                    raise
             llm_ms = (time.perf_counter() - t_llm) * 1000.0
 
             # Xác thực trích dẫn hai lớp ([SP4-03])

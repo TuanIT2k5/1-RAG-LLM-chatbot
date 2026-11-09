@@ -1,0 +1,1491 @@
+{
+  "evaluation_title": "Báo cáo Đánh giá Định lượng Hệ thống RAG & A/B Testing (SP6-02)",
+  "dataset_summary": {
+    "total_questions": 75,
+    "direct_lookup_count": 40,
+    "multi_chunk_synthesis_count": 20,
+    "out_of_scope_count": 15,
+    "documents": [
+      {
+        "filename": "01_Bo_luat_Lao_dong_Trich_yeu.pdf",
+        "file_type": "pdf",
+        "page_count": 20,
+        "domain": "Pháp luật Lao động (Bộ luật Lao động 2019)"
+      },
+      {
+        "filename": "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf",
+        "file_type": "pdf",
+        "page_count": 18,
+        "domain": "Giáo dục Đại học (Quy chế Đào tạo Tín chỉ)"
+      },
+      {
+        "filename": "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf",
+        "file_type": "pdf",
+        "page_count": 16,
+        "domain": "Kỹ thuật CNTT, Bảo mật & Kiến trúc Hệ thống RAG"
+      },
+      {
+        "filename": "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx",
+        "file_type": "docx",
+        "section_count": 11,
+        "domain": "Chính sách Nhân sự, Phúc lợi & An toàn Thông tin Nội bộ"
+      }
+    ]
+  },
+  "best_configuration": {
+    "config_id": "CFG-400-K5",
+    "label": "Chunk 400 | Overlap 60 | Top-K=5 (Production)",
+    "chunk_size": 400,
+    "chunk_overlap": 60,
+    "top_k": 5,
+    "total_chunks_indexed": 88,
+    "avg_retrieval_latency_ms": 16.95,
+    "hit_rate_at_k": 0.9833,
+    "recall_at_k": 0.9583,
+    "precision_at_k": 0.33,
+    "mrr": 0.9833,
+    "direct_lookup_hit_rate": 1.0,
+    "synthesis_hit_rate": 0.95,
+    "faithfulness": 1.0,
+    "answer_relevancy": 0.9583,
+    "citation_accuracy": 1.0,
+    "out_of_scope_refusal_rate": 1.0,
+    "hallucinated_citation_rate": 0.0,
+    "composite_score": 0.9779
+  },
+  "ab_testing_results": [
+    {
+      "config_id": "CFG-300-K3",
+      "label": "Chunk 300 | Overlap 45 | Top-K=3",
+      "chunk_size": 300,
+      "chunk_overlap": 45,
+      "top_k": 3,
+      "total_chunks_indexed": 141,
+      "avg_retrieval_latency_ms": 11.58,
+      "hit_rate_at_k": 0.9833,
+      "recall_at_k": 0.9194,
+      "precision_at_k": 0.6,
+      "mrr": 0.9639,
+      "direct_lookup_hit_rate": 1.0,
+      "synthesis_hit_rate": 0.95,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9153,
+      "citation_accuracy": 1.0,
+      "out_of_scope_refusal_rate": 1.0,
+      "hallucinated_citation_rate": 0.0,
+      "composite_score": 0.9598
+    },
+    {
+      "config_id": "CFG-300-K5",
+      "label": "Chunk 300 | Overlap 45 | Top-K=5",
+      "chunk_size": 300,
+      "chunk_overlap": 45,
+      "top_k": 5,
+      "total_chunks_indexed": 141,
+      "avg_retrieval_latency_ms": 12.66,
+      "hit_rate_at_k": 0.9833,
+      "recall_at_k": 0.9417,
+      "precision_at_k": 0.4167,
+      "mrr": 0.9639,
+      "direct_lookup_hit_rate": 1.0,
+      "synthesis_hit_rate": 0.95,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9417,
+      "citation_accuracy": 1.0,
+      "out_of_scope_refusal_rate": 1.0,
+      "hallucinated_citation_rate": 0.0,
+      "composite_score": 0.9682
+    },
+    {
+      "config_id": "CFG-400-K3",
+      "label": "Chunk 400 | Overlap 60 | Top-K=3",
+      "chunk_size": 400,
+      "chunk_overlap": 60,
+      "top_k": 3,
+      "total_chunks_indexed": 88,
+      "avg_retrieval_latency_ms": 12.64,
+      "hit_rate_at_k": 0.9833,
+      "recall_at_k": 0.9472,
+      "precision_at_k": 0.5,
+      "mrr": 0.9833,
+      "direct_lookup_hit_rate": 1.0,
+      "synthesis_hit_rate": 0.95,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9472,
+      "citation_accuracy": 1.0,
+      "out_of_scope_refusal_rate": 1.0,
+      "hallucinated_citation_rate": 0.0,
+      "composite_score": 0.974
+    },
+    {
+      "config_id": "CFG-400-K5",
+      "label": "Chunk 400 | Overlap 60 | Top-K=5 (Production)",
+      "chunk_size": 400,
+      "chunk_overlap": 60,
+      "top_k": 5,
+      "total_chunks_indexed": 88,
+      "avg_retrieval_latency_ms": 16.95,
+      "hit_rate_at_k": 0.9833,
+      "recall_at_k": 0.9583,
+      "precision_at_k": 0.33,
+      "mrr": 0.9833,
+      "direct_lookup_hit_rate": 1.0,
+      "synthesis_hit_rate": 0.95,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9583,
+      "citation_accuracy": 1.0,
+      "out_of_scope_refusal_rate": 1.0,
+      "hallucinated_citation_rate": 0.0,
+      "composite_score": 0.9779
+    },
+    {
+      "config_id": "CFG-500-K3",
+      "label": "Chunk 500 | Overlap 75 | Top-K=3",
+      "chunk_size": 500,
+      "chunk_overlap": 75,
+      "top_k": 3,
+      "total_chunks_indexed": 87,
+      "avg_retrieval_latency_ms": 13.34,
+      "hit_rate_at_k": 0.9833,
+      "recall_at_k": 0.9472,
+      "precision_at_k": 0.5,
+      "mrr": 0.9833,
+      "direct_lookup_hit_rate": 1.0,
+      "synthesis_hit_rate": 0.95,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9472,
+      "citation_accuracy": 1.0,
+      "out_of_scope_refusal_rate": 1.0,
+      "hallucinated_citation_rate": 0.0,
+      "composite_score": 0.974
+    },
+    {
+      "config_id": "CFG-500-K5",
+      "label": "Chunk 500 | Overlap 75 | Top-K=5",
+      "chunk_size": 500,
+      "chunk_overlap": 75,
+      "top_k": 5,
+      "total_chunks_indexed": 87,
+      "avg_retrieval_latency_ms": 15.86,
+      "hit_rate_at_k": 0.9833,
+      "recall_at_k": 0.9583,
+      "precision_at_k": 0.33,
+      "mrr": 0.9833,
+      "direct_lookup_hit_rate": 1.0,
+      "synthesis_hit_rate": 0.95,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.9583,
+      "citation_accuracy": 1.0,
+      "out_of_scope_refusal_rate": 1.0,
+      "hallucinated_citation_rate": 0.0,
+      "composite_score": 0.9779
+    }
+  ],
+  "best_config_question_breakdown": [
+    {
+      "id": "GD-001",
+      "category": "direct_lookup",
+      "question": "Độ tuổi lao động tối thiểu của người lao động theo Bộ luật Lao động là bao nhiêu tuổi?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p1",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p17",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p19",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p20",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p9"
+      ],
+      "latency_ms": 15.88
+    },
+    {
+      "id": "GD-002",
+      "category": "direct_lookup",
+      "question": "Trong trường hợp nào hai bên được giao kết hợp đồng lao động bằng lời nói?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p2",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p5",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p3",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p7",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p15"
+      ],
+      "latency_ms": 19.29
+    },
+    {
+      "id": "GD-003",
+      "category": "direct_lookup",
+      "question": "Hợp đồng lao động xác định thời hạn có thời hạn tối đa không quá bao nhiêu tháng?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p3",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p7",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p5",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p6",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p2"
+      ],
+      "latency_ms": 14.05
+    },
+    {
+      "id": "GD-004",
+      "category": "direct_lookup",
+      "question": "Thời gian thử việc tối đa đối với công việc cần trình độ từ cao đẳng, đại học trở lên là bao nhiêu ngày?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p4",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p11",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p19"
+      ],
+      "latency_ms": 15.26
+    },
+    {
+      "id": "GD-005",
+      "category": "direct_lookup",
+      "question": "Tiền lương của người lao động trong thời gian thử việc ít nhất phải bằng bao nhiêu phần trăm mức lương của công việc đó?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p5",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p6",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p9",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p10",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p8"
+      ],
+      "latency_ms": 16.73
+    },
+    {
+      "id": "GD-006",
+      "category": "direct_lookup",
+      "question": "Người lao động làm việc theo hợp đồng lao động không xác định thời hạn muốn đơn phương chấm dứt hợp đồng thì phải báo trước ít nhất bao nhiêu ngày?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p7",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p3",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p6",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p5",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p8"
+      ],
+      "latency_ms": 20.21
+    },
+    {
+      "id": "GD-007",
+      "category": "direct_lookup",
+      "question": "Người lao động làm thêm giờ vào ngày nghỉ lễ, tết được trả lương ít nhất bằng bao nhiêu phần trăm?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p10",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p14",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p7",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p6",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p9"
+      ],
+      "latency_ms": 14.6
+    },
+    {
+      "id": "GD-008",
+      "category": "direct_lookup",
+      "question": "Mức khấu trừ tiền lương hằng tháng để bồi thường thiệt hại tài sản tối đa không được vượt quá bao nhiêu phần trăm?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p11",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p4",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p5",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p2",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p2"
+      ],
+      "latency_ms": 16.15
+    },
+    {
+      "id": "GD-009",
+      "category": "direct_lookup",
+      "question": "Giờ làm việc ban đêm được Bộ luật Lao động quy định tính từ mấy giờ đến mấy giờ?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p12",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p19",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p10",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p13",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p12"
+      ],
+      "latency_ms": 20.0
+    },
+    {
+      "id": "GD-010",
+      "category": "direct_lookup",
+      "question": "Người lao động làm việc đủ 12 tháng trong điều kiện bình thường được nghỉ phép hằng năm bao nhiêu ngày?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p15",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p10",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p13",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p12",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p16"
+      ],
+      "latency_ms": 13.3
+    },
+    {
+      "id": "GD-011",
+      "category": "direct_lookup",
+      "question": "Thời hiệu xử lý kỷ luật lao động đối với hành vi liên quan trực tiếp đến tài chính, tài sản và bí mật công nghệ là bao nhiêu tháng?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p17",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p18",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p11",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p1",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p9"
+      ],
+      "latency_ms": 20.66
+    },
+    {
+      "id": "GD-012",
+      "category": "direct_lookup",
+      "question": "Lao động nữ sinh con được nghỉ thai sản trước và sau khi sinh tổng cộng bao nhiêu tháng?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p19",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p14",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p20",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p17",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p11"
+      ],
+      "latency_ms": 16.79
+    },
+    {
+      "id": "GD-013",
+      "category": "direct_lookup",
+      "question": "Một tín chỉ được quy định tương đương với bao nhiêu tiết học lý thuyết trên lớp?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p1",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p17",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p4",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p10",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p16"
+      ],
+      "latency_ms": 19.15
+    },
+    {
+      "id": "GD-014",
+      "category": "direct_lookup",
+      "question": "Chương trình đào tạo hệ Cử nhân và hệ Kỹ sư yêu cầu tích lũy tối thiểu bao nhiêu tín chỉ?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p2",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p13",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p16",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p1"
+      ],
+      "latency_ms": 16.58
+    },
+    {
+      "id": "GD-015",
+      "category": "direct_lookup",
+      "question": "Sinh viên có học lực bình thường phải đăng ký tối thiểu và tối đa bao nhiêu tín chỉ trong một học kỳ chính?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p4",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p5",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p2",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p10",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p13"
+      ],
+      "latency_ms": 20.17
+    },
+    {
+      "id": "GD-016",
+      "category": "direct_lookup",
+      "question": "Sinh viên vắng mặt quá bao nhiêu phần trăm số tiết của học phần sẽ bị cấm thi kết thúc học phần?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p6",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p8",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p5",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p3",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p16"
+      ],
+      "latency_ms": 19.61
+    },
+    {
+      "id": "GD-017",
+      "category": "direct_lookup",
+      "question": "Điểm học phần đạt từ 8.0 đến 8.4 theo thang điểm 10 sẽ quy đổi sang điểm chữ gì và bao nhiêu điểm ở thang điểm 4?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p7",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p17",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p8",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p7",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15"
+      ],
+      "latency_ms": 14.23
+    },
+    {
+      "id": "GD-018",
+      "category": "direct_lookup",
+      "question": "Sinh viên bị cảnh báo học vụ liên tiếp bao nhiêu lần thì bị buộc thôi học?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p10",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p11",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p18",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p4",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p8"
+      ],
+      "latency_ms": 19.41
+    },
+    {
+      "id": "GD-019",
+      "category": "direct_lookup",
+      "question": "Điều kiện về điểm trung bình tích lũy (CPA) để sinh viên được đăng ký học cùng lúc hai chương trình (song bằng) là bao nhiêu?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p12",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p11",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p8",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p13"
+      ],
+      "latency_ms": 16.34
+    },
+    {
+      "id": "GD-020",
+      "category": "direct_lookup",
+      "question": "Chuẩn đầu ra tiếng Anh tối thiểu đối với các ngành không chuyên ngữ tương đương bao nhiêu điểm IELTS hoặc TOEIC?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p14",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p13",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p5",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p7"
+      ],
+      "latency_ms": 14.82
+    },
+    {
+      "id": "GD-021",
+      "category": "direct_lookup",
+      "question": "Khối lượng học phần phải học lại vượt quá bao nhiêu phần trăm tổng số tín chỉ toàn khóa thì sinh viên loại Xuất sắc, Giỏi bị hạ một bậc bằng tốt nghiệp?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p16",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p10",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p13",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p2",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p17"
+      ],
+      "latency_ms": 20.9
+    },
+    {
+      "id": "GD-022",
+      "category": "direct_lookup",
+      "question": "Khóa luận tốt nghiệp có tỷ lệ đạo văn trên Turnitin vượt quá bao nhiêu phần trăm sẽ không được phép bảo vệ?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p18",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p13",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p16",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p11",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15"
+      ],
+      "latency_ms": 19.94
+    },
+    {
+      "id": "GD-023",
+      "category": "direct_lookup",
+      "question": "Cam kết độ sẵn sàng (Uptime SLA) hằng tháng của môi trường Production là bao nhiêu phần trăm và thời gian ngừng hoạt động tối đa là bao lâu?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p2",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p9",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p2",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p12",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p11"
+      ],
+      "latency_ms": 17.46
+    },
+    {
+      "id": "GD-024",
+      "category": "direct_lookup",
+      "question": "Chỉ tiêu thời gian tìm kiếm Top-5 vector trên ChromaDB với 10.000 Chunks và thời gian phản hồi p95 của End-to-End RAG Chat là bao nhiêu?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p3",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p12",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p9",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p2",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p10"
+      ],
+      "latency_ms": 15.82
+    },
+    {
+      "id": "GD-025",
+      "category": "direct_lookup",
+      "question": "Thông số cấu hình Connection Pooling chuẩn của PostgreSQL trên SQLAlchemy (pool_size, max_overflow, pool_recycle) là bao nhiêu?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p4",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p15",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p5",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p6"
+      ],
+      "latency_ms": 11.97
+    },
+    {
+      "id": "GD-026",
+      "category": "direct_lookup",
+      "question": "Mô hình BAAI/bge-m3 sinh ra vector có bao nhiêu chiều và ChromaDB sử dụng các siêu tham số HNSW (M, ef_construction, ef_search) như thế nào?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p5",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p4",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p1",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p18",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p9"
+      ],
+      "latency_ms": 17.06
+    },
+    {
+      "id": "GD-027",
+      "category": "direct_lookup",
+      "question": "Thời hạn hiệu lực của Access Token và Refresh Token trong cơ chế xác thực JWT là bao lâu?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p7",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p3",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p14",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p9",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p10"
+      ],
+      "latency_ms": 15.54
+    },
+    {
+      "id": "GD-028",
+      "category": "direct_lookup",
+      "question": "Giới hạn tần suất gọi API (Rate Limiting) đối với endpoint POST /api/chat và POST /api/documents/upload là bao nhiêu requests mỗi phút?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p8",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p15",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p13",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p16",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p10"
+      ],
+      "latency_ms": 11.11
+    },
+    {
+      "id": "GD-029",
+      "category": "direct_lookup",
+      "question": "Chỉ tiêu RPO và RTO trong chính sách sao lưu phục hồi thảm họa của hệ thống là bao nhiêu phút?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.6,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p9",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p3",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p12",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p7",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p8"
+      ],
+      "latency_ms": 16.51
+    },
+    {
+      "id": "GD-030",
+      "category": "direct_lookup",
+      "question": "Thời gian lưu trữ nhật ký hệ thống trực tuyến (Hot Storage) và lưu trữ lạnh (Cold Archive) được quy định là bao nhiêu ngày?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p10",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p3",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p17",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p9",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p4"
+      ],
+      "latency_ms": 20.25
+    },
+    {
+      "id": "GD-031",
+      "category": "direct_lookup",
+      "question": "Hệ thống Prometheus phát cảnh báo tự động khi mức sử dụng CPU/RAM hoặc tỷ lệ lỗi HTTP 5xx vượt ngưỡng nào?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p11",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p15",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p1",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p12",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p19"
+      ],
+      "latency_ms": 18.54
+    },
+    {
+      "id": "GD-032",
+      "category": "direct_lookup",
+      "question": "Khóa API và mật khẩu cơ sở dữ liệu Production phải được xoay vòng (Secret Rotation) định kỳ bao nhiêu ngày một lần?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p16",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p10",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p10",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p7",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p6"
+      ],
+      "latency_ms": 18.1
+    },
+    {
+      "id": "GD-033",
+      "category": "direct_lookup",
+      "question": "Khung giờ làm việc linh hoạt buổi sáng và khung giờ nghỉ trưa tại Công ty được quy định như thế nào?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p12",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p10"
+      ],
+      "latency_ms": 14.46
+    },
+    {
+      "id": "GD-034",
+      "category": "direct_lookup",
+      "question": "Nhân viên chính thức được đăng ký làm việc từ xa (Hybrid Work) tối đa bao nhiêu ngày mỗi tuần và phải duy trì trực tuyến trong khung giờ lõi nào?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.6,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p4"
+      ],
+      "latency_ms": 14.51
+    },
+    {
+      "id": "GD-035",
+      "category": "direct_lookup",
+      "question": "Mức phụ cấp ăn trưa và phụ cấp xăng xe đi lại cố định hằng tháng của nhân viên toàn thời gian là bao nhiêu?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p4",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p9"
+      ],
+      "latency_ms": 19.69
+    },
+    {
+      "id": "GD-036",
+      "category": "direct_lookup",
+      "question": "Ngân sách đào tạo hằng năm của nhân viên chính thức là bao nhiêu và mức thưởng nóng khi đạt chứng chỉ AWS, GCP, PMP, CISSP là bao nhiêu?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p15",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p14"
+      ],
+      "latency_ms": 19.82
+    },
+    {
+      "id": "GD-037",
+      "category": "direct_lookup",
+      "question": "Máy tính xách tay công ty cấp phát phải tự động khóa màn hình sau bao nhiêu phút không tương tác?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p11",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p13"
+      ],
+      "latency_ms": 19.29
+    },
+    {
+      "id": "GD-038",
+      "category": "direct_lookup",
+      "question": "Độ dài tối thiểu của mật khẩu tài khoản nội bộ là bao nhiêu ký tự và bao lâu phải đổi mật khẩu một lần?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p6",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p16",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p7"
+      ],
+      "latency_ms": 15.4
+    },
+    {
+      "id": "GD-039",
+      "category": "direct_lookup",
+      "question": "Khi phát hiện mất máy tính xách tay hoặc nghi ngờ lộ tài khoản, nhân viên phải báo cho bộ phận An toàn thông tin trong vòng bao nhiêu phút?",
+      "hit": 1.0,
+      "recall": 0.333333,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.333333,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p1",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p17",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p11",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p4"
+      ],
+      "latency_ms": 17.87
+    },
+    {
+      "id": "GD-040",
+      "category": "direct_lookup",
+      "question": "Theo bảng tổng hợp chế độ đãi ngộ trong Sổ tay Nhân sự, Quản lý cấp trung trở lên (Level 4+) được hưởng phụ cấp ăn trưa, đi lại và ngân sách đào tạo mỗi năm là bao nhiêu?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p16",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p8"
+      ],
+      "latency_ms": 14.79
+    },
+    {
+      "id": "GD-041",
+      "category": "multi_chunk_synthesis",
+      "question": "Hãy tổng hợp đầy đủ các mốc thời gian thử việc tối đa theo từng cấp bậc công việc và quy định về mức tiền lương tối thiểu trong thời gian thử việc.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.8,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p5",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p9",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p4",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p2",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p6"
+      ],
+      "latency_ms": 15.59
+    },
+    {
+      "id": "GD-042",
+      "category": "multi_chunk_synthesis",
+      "question": "So sánh mức hưởng trợ cấp thôi việc (Điều 46) và trợ cấp mất việc làm (Điều 47) đối với người lao động đã làm việc đủ 12 tháng trở lên.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p8",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p19",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p15",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p7",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p12"
+      ],
+      "latency_ms": 19.85
+    },
+    {
+      "id": "GD-043",
+      "category": "multi_chunk_synthesis",
+      "question": "Tổng hợp giới hạn số giờ làm thêm tối đa theo ngày, tháng, năm và cách tính tiền lương làm thêm giờ vào ngày thường, ngày nghỉ tuần, ngày lễ tết.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.6,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p10",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p13",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p19",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p12",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p16"
+      ],
+      "latency_ms": 16.94
+    },
+    {
+      "id": "GD-044",
+      "category": "multi_chunk_synthesis",
+      "question": "Một nhân viên làm việc trong điều kiện bình thường đã gắn bó liên tục đủ 10 năm tại công ty thì tổng số ngày nghỉ phép năm hưởng nguyên lương là bao nhiêu ngày? Giải thích cách tính.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p15",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p10",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p16",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p13",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p14"
+      ],
+      "latency_ms": 19.5
+    },
+    {
+      "id": "GD-045",
+      "category": "multi_chunk_synthesis",
+      "question": "Tổng hợp các ngày nghỉ lễ, tết hưởng nguyên lương trong năm (Điều 112) và các trường hợp nghỉ việc riêng hưởng nguyên lương (Điều 115).",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p14",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p16",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p10",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p15",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p3"
+      ],
+      "latency_ms": 12.48
+    },
+    {
+      "id": "GD-046",
+      "category": "multi_chunk_synthesis",
+      "question": "Trình bày thời hiệu xử lý kỷ luật lao động, các trường hợp không được xử lý kỷ luật và các hành vi dẫn đến hình thức kỷ luật sa thải.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p18",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p17",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p9",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p18"
+      ],
+      "latency_ms": 12.9
+    },
+    {
+      "id": "GD-047",
+      "category": "multi_chunk_synthesis",
+      "question": "Tổng hợp các quyền lợi bảo vệ thai sản đối với lao động nữ mang thai từ tháng thứ 07, thời gian nghỉ thai sản và lộ trình tuổi nghỉ hưu của lao động nữ.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.6,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p19",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p17",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p20",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p13",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p15"
+      ],
+      "latency_ms": 23.51
+    },
+    {
+      "id": "GD-048",
+      "category": "multi_chunk_synthesis",
+      "question": "So sánh sự khác biệt giữa chương trình đào tạo hệ Cử nhân và hệ Kỹ sư về tổng số tín chỉ tối thiểu, thời gian đào tạo chuẩn và thời gian tối đa được phép học.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p2",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p13",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p16",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p11"
+      ],
+      "latency_ms": 20.24
+    },
+    {
+      "id": "GD-049",
+      "category": "multi_chunk_synthesis",
+      "question": "Một sinh viên đang trong diện cảnh báo học vụ thì bị giới hạn số tín chỉ đăng ký mỗi học kỳ chính như thế nào và khi nào sẽ bị buộc thôi học?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p10",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p4",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p5",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p11",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p16"
+      ],
+      "latency_ms": 14.17
+    },
+    {
+      "id": "GD-050",
+      "category": "multi_chunk_synthesis",
+      "question": "Trình bày quy định về trọng số điểm học phần, điều kiện dự thi kết thúc học phần và quy định học lại / học cải thiện điểm đối với điểm F, D, D+.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.6,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p6",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p8",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p16",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p5"
+      ],
+      "latency_ms": 18.81
+    },
+    {
+      "id": "GD-051",
+      "category": "multi_chunk_synthesis",
+      "question": "Tổng hợp tất cả các điều kiện để một sinh viên hệ Cử nhân được xét công nhận tốt nghiệp đúng hạn và đạt bằng tốt nghiệp loại Xuất sắc mà không bị hạ bậc.",
+      "hit": 1.0,
+      "recall": 0.5,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.5,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p16",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p13",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p17",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p18"
+      ],
+      "latency_ms": 20.59
+    },
+    {
+      "id": "GD-052",
+      "category": "multi_chunk_synthesis",
+      "question": "So sánh điều kiện về điểm trung bình tích lũy (CPA) tối thiểu khi: (1) Xin nghỉ học tạm thời vì lý do cá nhân, (2) Nhận làm Khóa luận tốt nghiệp, và (3) Đăng ký học song bằng.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.8,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p13",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p11",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p12",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p8"
+      ],
+      "latency_ms": 22.13
+    },
+    {
+      "id": "GD-053",
+      "category": "multi_chunk_synthesis",
+      "question": "Tổng hợp kiến trúc lưu trữ dữ liệu của hệ thống RAG gồm PostgreSQL 16 và ChromaDB (kích thước vector, thuật toán chỉ mục và thông số kết nối).",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p5",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p4",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p6",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p1",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p3"
+      ],
+      "latency_ms": 22.53
+    },
+    {
+      "id": "GD-054",
+      "category": "multi_chunk_synthesis",
+      "question": "Trình bày toàn diện các lớp bảo mật dữ liệu, cơ chế xác thực JWT và giới hạn tần suất Rate Limiting trên hệ thống CNTT.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.6,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p8",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p7",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p14",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p6",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p16"
+      ],
+      "latency_ms": 16.27
+    },
+    {
+      "id": "GD-055",
+      "category": "multi_chunk_synthesis",
+      "question": "Tổng hợp chính sách sao lưu phục hồi thảm họa (RPO, RTO, lịch Backup) và thời gian phản ứng sự cố đối với mức P1 và P2.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p9",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p12",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p3",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p2",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p15"
+      ],
+      "latency_ms": 16.83
+    },
+    {
+      "id": "GD-056",
+      "category": "multi_chunk_synthesis",
+      "question": "Hệ thống triển khai những biện pháp kỹ thuật nào để chống Indirect Prompt Injection, chống ảo giác (Hallucination) và chống tải tệp độc hại?",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p14",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p8",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p15",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p11",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p4"
+      ],
+      "latency_ms": 21.44
+    },
+    {
+      "id": "GD-057",
+      "category": "multi_chunk_synthesis",
+      "question": "Tổng hợp giới hạn tài nguyên phần cứng (vCPU, RAM) của 3 dịch vụ trong Docker Compose và 4 cổng kiểm tra bắt buộc trong quy trình CI/CD.",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p15",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p13",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p6",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p8",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p13"
+      ],
+      "latency_ms": 19.28
+    },
+    {
+      "id": "GD-058",
+      "category": "multi_chunk_synthesis",
+      "question": "So sánh quyền lợi giữa Nhân viên thử việc và Nhân viên chính thức (Level 1-2) tại Công ty về phụ cấp ăn trưa, đi lại, ngân sách đào tạo và số ngày làm việc từ xa (WFH).",
+      "hit": 1.0,
+      "recall": 1.0,
+      "precision": 0.2,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 1.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p15",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p6",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p4"
+      ],
+      "latency_ms": 18.19
+    },
+    {
+      "id": "GD-059",
+      "category": "multi_chunk_synthesis",
+      "question": "Tổng hợp các quy định về bảo mật thiết bị đầu cuối, mật khẩu tài khoản nội bộ và quy trình xử lý khi nhân viên bị mất laptop công vụ.",
+      "hit": 0.0,
+      "recall": 0.0,
+      "precision": 0.0,
+      "rr": 0.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.0,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p10",
+        "04_So_tay_Chinh_sach_Nhan_su_va_ATTT.docx:pNone",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p6",
+        "02_Quy_che_Dao_tao_Tin_chi_Dai_hoc.pdf:p5",
+        "03_Tai_lieu_Kien_truc_Ky_thuat_CNTT_RAG.pdf:p13"
+      ],
+      "latency_ms": 19.02
+    },
+    {
+      "id": "GD-060",
+      "category": "multi_chunk_synthesis",
+      "question": "Đối chiếu quy định thời giờ làm việc bình thường trong Bộ luật Lao động (Tài liệu 01) và Thời gian làm việc chuẩn thực tế tại Công ty trong Sổ tay Nhân sự (Tài liệu 04).",
+      "hit": 1.0,
+      "recall": 0.666667,
+      "precision": 0.4,
+      "rr": 1.0,
+      "faithfulness": 1.0,
+      "answer_relevancy": 0.666667,
+      "citation_accuracy": 1.0,
+      "top_retrieved_pages": [
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p12",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p13",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p1",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p19",
+        "01_Bo_luat_Lao_dong_Trich_yeu.pdf:p10"
+      ],
+      "latency_ms": 16.9
+    },
+    {
+      "id": "GD-061",
+      "category": "out_of_scope",
+      "question": "Dự báo thời tiết tại thủ đô Hà Nội và TP. Hồ Chí Minh vào cuối tuần này có mưa bão không?",
+      "refusal_correct": 1.0,
+      "latency_ms": 22.59
+    },
+    {
+      "id": "GD-062",
+      "category": "out_of_scope",
+      "question": "Giá vàng miếng SJC và tỷ giá đồng Bitcoin hôm nay trên thị trường quốc tế là bao nhiêu đô la?",
+      "refusal_correct": 1.0,
+      "latency_ms": 11.81
+    },
+    {
+      "id": "GD-063",
+      "category": "out_of_scope",
+      "question": "Hướng dẫn chi tiết công thức nấu món phở bò gia truyền Nam Định và cách hầm nước dùng trong ngọt?",
+      "refusal_correct": 1.0,
+      "latency_ms": 15.97
+    },
+    {
+      "id": "GD-064",
+      "category": "out_of_scope",
+      "question": "Đội tuyển bóng đá quốc gia nào đã giành chức vô địch World Cup 2022 và cầu thủ nào ghi nhiều bàn thắng nhất?",
+      "refusal_correct": 1.0,
+      "latency_ms": 12.99
+    },
+    {
+      "id": "GD-065",
+      "category": "out_of_scope",
+      "question": "Liều lượng sử dụng thuốc kháng sinh Amoxicillin 500mg để điều trị viêm họng cấp ở trẻ em 5 tuổi như thế nào?",
+      "refusal_correct": 1.0,
+      "latency_ms": 13.48
+    },
+    {
+      "id": "GD-066",
+      "category": "out_of_scope",
+      "question": "Khoảng cách trung bình từ Trái Đất đến Sao Hỏa là bao nhiêu triệu km và tàu vũ trụ bay mất bao lâu?",
+      "refusal_correct": 1.0,
+      "latency_ms": 13.78
+    },
+    {
+      "id": "GD-067",
+      "category": "out_of_scope",
+      "question": "Thủ tục xin cấp thị thực (Visa) du lịch Schengen sang Pháp và Thụy Sĩ cần chứng minh tài chính bao nhiêu tiền?",
+      "refusal_correct": 1.0,
+      "latency_ms": 13.63
+    },
+    {
+      "id": "GD-068",
+      "category": "out_of_scope",
+      "question": "Thuế suất thuế bất động sản liên bang tại bang California (Hoa Kỳ) năm 2026 được tính theo công thức nào?",
+      "refusal_correct": 1.0,
+      "latency_ms": 11.94
+    },
+    {
+      "id": "GD-069",
+      "category": "out_of_scope",
+      "question": "Cấu hình chi tiết của dòng xe điện VinFast VF8 và dung lượng pin di chuyển được tối đa bao nhiêu km một lần sạc?",
+      "refusal_correct": 1.0,
+      "latency_ms": 14.5
+    },
+    {
+      "id": "GD-070",
+      "category": "out_of_scope",
+      "question": "Cách chăm sóc cây hoa lan hồ điệp ra hoa đúng dịp Tết Nguyên Đán và tỷ lệ pha phân bón NPK?",
+      "refusal_correct": 1.0,
+      "latency_ms": 14.86
+    },
+    {
+      "id": "GD-071",
+      "category": "out_of_scope",
+      "question": "Lịch chiếu phim rạp CGV cuối tuần này có những bộ phim bom tấn Hollywood nào mới ra mắt?",
+      "refusal_correct": 1.0,
+      "latency_ms": 14.78
+    },
+    {
+      "id": "GD-072",
+      "category": "out_of_scope",
+      "question": "Quá trình quang hợp ở thực vật diễn ra tại bào quan nào và phương trình hóa học tổng quát là gì?",
+      "refusal_correct": 1.0,
+      "latency_ms": 17.26
+    },
+    {
+      "id": "GD-073",
+      "category": "out_of_scope",
+      "question": "Danh sách các hoàng đế triều đại nhà Nguyễn trong lịch sử phong kiến Việt Nam theo thứ tự niên đại?",
+      "refusal_correct": 1.0,
+      "latency_ms": 18.92
+    },
+    {
+      "id": "GD-074",
+      "category": "out_of_scope",
+      "question": "Giá vé máy bay khứ hồi hạng thương gia của Vietnam Airlines chặng Hà Nội đi Tokyo Nhật Bản hiện tại là bao nhiêu?",
+      "refusal_correct": 1.0,
+      "latency_ms": 13.7
+    },
+    {
+      "id": "GD-075",
+      "category": "out_of_scope",
+      "question": "Cách pha chế cà phê Espresso chuẩn Ý với áp suất máy pha bao nhiêu bar và nhiệt độ nước bao nhiêu độ C?",
+      "refusal_correct": 1.0,
+      "latency_ms": 11.73
+    }
+  ]
+}
