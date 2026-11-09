@@ -104,6 +104,42 @@ def _normalize_for_dedup(text: str) -> str:
     return re.sub(r"\s+", " ", normalized)
 
 
+_QUERY_STOPWORDS = {
+    "là", "và", "của", "có", "được", "trong", "cho", "các", "với", "những",
+    "này", "đó", "khi", "thì", "mà", "ở", "tại", "về", "theo", "như", "thế",
+    "nào", "bao", "nhiêu", "sẽ", "bị", "do", "từ", "đến", "hay", "hoặc",
+    "gì", "ai", "đâu", "sao", "nào",
+}
+
+
+def _compute_lexical_overlap_boost(question: str, chunk_text: str) -> float:
+    """
+    Tính điểm khớp từ khóa & cụm 2 từ tiếng Việt giữa câu hỏi và đoạn văn bản.
+    Hỗ trợ tăng độ chính xác khi chạy chế độ LightweightVietnameseEmbedder.
+    """
+    q_clean = normalize_unicode_nfc(question or "").lower()
+    c_clean = normalize_unicode_nfc(chunk_text or "").lower()
+
+    q_words = [
+        w
+        for w in re.findall(r"\w+", q_clean, flags=re.UNICODE)
+        if len(w) > 1 and w not in _QUERY_STOPWORDS
+    ]
+    if not q_words:
+        return 0.0
+
+    c_word_set = set(re.findall(r"\w+", c_clean, flags=re.UNICODE))
+    matched_words = sum(1 for w in q_words if w in c_word_set)
+    word_ratio = matched_words / len(q_words)
+
+    # Kiểm tra cụm 2 từ liền kề (ví dụ: "đèn đỏ", "giấy phép", "tốc độ")
+    q_bigrams = [f"{q_words[i]} {q_words[i + 1]}" for i in range(len(q_words) - 1)]
+    matched_bigrams = sum(1 for bg in q_bigrams if bg in c_clean)
+    bigram_bonus = min(0.35, matched_bigrams * 0.18)
+
+    return round(min(0.85, word_ratio * 0.55 + bigram_bonus), 6)
+
+
 class SemanticRetriever:
     """
     [SP3-04.1 -> SP3-04.4] Bộ truy xuất ngữ nghĩa tìm kiếm Top-K đoạn văn bản
@@ -165,7 +201,14 @@ class SemanticRetriever:
         where_filter = build_document_filter(document_ids)
 
         # Lấy dư số lượng ứng viên để sau khi khử trùng lặp vẫn đủ Top-K
-        candidate_k = max(effective_top_k * 2, effective_top_k + 5)
+        is_lightweight = (
+            type(self.embedding_service.model).__name__ == "LightweightVietnameseEmbedder"
+        )
+        candidate_k = (
+            max(effective_top_k * 10, 40)
+            if is_lightweight
+            else max(effective_top_k * 2, effective_top_k + 5)
+        )
         raw_candidates = self.vector_store.query_similar(
             query_embedding=query_vector,
             n_results=candidate_k,
@@ -182,6 +225,11 @@ class SemanticRetriever:
 
             distance = float(item.get("distance", 1.0))
             sim_score = cosine_distance_to_similarity(distance)
+            if is_lightweight:
+                lexical_boost = _compute_lexical_overlap_boost(
+                    cleaned_question, text_content
+                )
+                sim_score = round(min(0.99, max(sim_score, sim_score * 0.5 + lexical_boost)), 6)
 
             if sim_score < threshold:
                 continue

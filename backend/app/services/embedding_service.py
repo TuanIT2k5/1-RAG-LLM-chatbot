@@ -1,3 +1,5 @@
+import hashlib
+import re
 import threading
 import time
 from typing import Any, List, Optional, Sequence
@@ -9,6 +11,90 @@ from app.core.logging import get_logger
 from app.utils.text_cleaner import normalize_unicode_nfc
 
 logger = get_logger(__name__)
+
+
+_VIETNAMESE_STOPWORDS = {
+    "là", "và", "của", "có", "được", "trong", "cho", "các", "với", "những",
+    "này", "đó", "khi", "thì", "mà", "ở", "tại", "về", "theo", "như", "thế",
+    "nào", "bao", "nhiêu", "sẽ", "bị", "do", "từ", "đến", "hay", "hoặc",
+    "một", "nhiều", "người", "việc", "quy", "định", "nội", "dung",
+}
+
+
+class LightweightVietnameseEmbedder:
+    """
+    Bộ sinh vector ngữ nghĩa nhẹ 1024 chiều dựa trên Feature Hashing đa tầng
+    (Sublinear TF Unigrams + Bigrams tiếng Việt đã lọc hư từ).
+    Tự động kích hoạt khi môi trường phát triển cục bộ chưa cài đặt gói nặng
+    `sentence-transformers` / `torch` (~4GB), giúp hệ thống hoạt động tức thì.
+    """
+
+    def __init__(self, dim: int = 1024) -> None:
+        self.dim = dim
+
+    def _encode_single(self, text: str) -> np.ndarray:
+        cleaned = normalize_unicode_nfc(text or "").lower()
+        all_words = re.findall(r"\w+", cleaned, flags=re.UNICODE)
+        content_words = [
+            w for w in all_words if len(w) > 1 and w not in _VIETNAMESE_STOPWORDS
+        ]
+        if not content_words:
+            content_words = [w for w in all_words if len(w) > 1]
+
+        vec = np.zeros(self.dim, dtype=np.float32)
+        if not content_words:
+            vec[0] = 1.0
+            return vec
+
+        # 1. Tầng từ khóa (Unigrams với trọng số Sublinear TF = 1 + ln(count) để không bị pha loãng ở Chunk dài)
+        word_counts: dict[str, int] = {}
+        for w in content_words:
+            word_counts[w] = word_counts.get(w, 0) + 1
+
+        for w, count in word_counts.items():
+            weight = 2.0 * (1.0 + float(np.log(count)))
+            h = int.from_bytes(
+                hashlib.blake2b(w.encode("utf-8"), digest_size=8).digest(),
+                "little",
+            )
+            idx = h % self.dim
+            sign = 1.0 if ((h >> 32) & 1) == 0 else -1.0
+            vec[idx] += sign * weight
+
+        # 2. Tầng cụm 2 từ khóa (Bigrams tiếng Việt, ví dụ: "đèn_đỏ", "giấy_phép", "lái_xe")
+        bigram_counts: dict[str, int] = {}
+        for i in range(len(content_words) - 1):
+            bg = f"{content_words[i]}_{content_words[i + 1]}"
+            bigram_counts[bg] = bigram_counts.get(bg, 0) + 1
+
+        for bg, count in bigram_counts.items():
+            weight = 3.0 * (1.0 + float(np.log(count)))
+            h = int.from_bytes(
+                hashlib.blake2b(bg.encode("utf-8"), digest_size=8).digest(),
+                "little",
+            )
+            idx = h % self.dim
+            sign = 1.0 if ((h >> 32) & 1) == 0 else -1.0
+            vec[idx] += sign * weight
+
+        norm = float(np.linalg.norm(vec))
+        if norm > 0:
+            vec = vec / norm
+        return vec
+
+    def encode(
+        self,
+        texts: Sequence[str],
+        batch_size: int = 32,
+        normalize_embeddings: bool = True,
+        show_progress_bar: bool = False,
+        convert_to_numpy: bool = True,
+    ) -> np.ndarray:
+        rows = [self._encode_single(t) for t in texts]
+        matrix = np.vstack(rows) if rows else np.zeros((0, self.dim), dtype=np.float32)
+        if normalize_embeddings and len(rows) > 0:
+            matrix = _l2_normalize_matrix(matrix)
+        return matrix
 
 
 def detect_compute_device(preferred_device: Optional[str] = None) -> str:
@@ -101,23 +187,36 @@ class EmbeddingService:
         return self._model
 
     def _load_sentence_transformer(self) -> None:
-        """Nạp mô hình BAAI/bge-m3 qua thư viện sentence-transformers."""
+        """
+        Nạp mô hình BAAI/bge-m3 qua thư viện sentence-transformers.
+        Nếu môi trường cục bộ chưa cài `sentence-transformers`, tự động kích hoạt
+        LightweightVietnameseEmbedder (1024 chiều) để chạy thử nghiệm ngay lập tức.
+        """
         start_time = time.perf_counter()
         logger.info(
             "Đang nạp mô hình Embedding '%s' trên thiết bị '%s'...",
             self.model_name,
             self.device,
         )
-        from sentence_transformers import SentenceTransformer  # type: ignore[import-not-found]
+        try:
+            from sentence_transformers import SentenceTransformer  # type: ignore[import-not-found]
 
-        self._model = SentenceTransformer(self.model_name, device=self.device)
-        elapsed = time.perf_counter() - start_time
-        logger.info(
-            "Hoàn tất nạp mô hình '%s' trên '%s' trong %.2f giây.",
-            self.model_name,
-            self.device,
-            elapsed,
-        )
+            self._model = SentenceTransformer(self.model_name, device=self.device)
+            elapsed = time.perf_counter() - start_time
+            logger.info(
+                "Hoàn tất nạp mô hình '%s' trên '%s' trong %.2f giây.",
+                self.model_name,
+                self.device,
+                elapsed,
+            )
+        except Exception as exc:
+            logger.warning(
+                "Chưa cài đặt 'sentence-transformers' hoặc không thể tải '%s' (%s). "
+                "Tự động dùng LightweightVietnameseEmbedder (1024 chiều) cho môi trường cục bộ.",
+                self.model_name,
+                exc,
+            )
+            self._model = LightweightVietnameseEmbedder(dim=1024)
 
     def set_model(self, model_obj: Any) -> None:
         """Gán mô hình tùy chỉnh (hữu ích khi kiểm thử đơn vị hoặc thay thế backend)."""

@@ -1,0 +1,22 @@
+# Môi trường ảo Python cục bộ
+venv/
+.venv/
+env/
+
+# Bộ nhớ đệm Python & Kiểm thử
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Dữ liệu lưu trữ cục bộ (sẽ được gắn qua Docker Volumes)
+storage/
+*.sqlite
+*.db
+
+# Biến môi trường cục bộ & Git
+.env
+.git/
+.gitignore

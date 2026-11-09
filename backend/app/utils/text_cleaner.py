@@ -56,8 +56,8 @@ def remove_control_chars_and_normalize_spaces(text: str) -> str:
     # Chuẩn hóa kiểu xuống dòng Windows/Mac về '\n'
     cleaned = text.replace("\r\n", "\n").replace("\r", "\n")
 
-    # Thay thế khoảng trắng không ngắt dòng (NBSP) bằng khoảng trắng chuẩn
-    cleaned = cleaned.replace("\u00a0", " ").replace("\u202f", " ")
+    # Thay thế khoảng trắng không ngắt dòng (NBSP) bằng khoảng trắng chuẩn và chuẩn hóa gạch nối PDF (\u00ad)
+    cleaned = cleaned.replace("\u00a0", " ").replace("\u202f", " ").replace("\u00ad", "-")
 
     # Xóa ký tự zero-width và ký tự điều khiển
     cleaned = ZERO_WIDTH_PATTERN.sub("", cleaned)

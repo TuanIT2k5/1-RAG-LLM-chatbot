@@ -65,12 +65,21 @@ export const useDocumentsStore = create<DocumentsState>((set) => ({
       const validIds = new Set(
         docs.filter((d) => d.status === "processed").map((d) => d.id)
       );
+      const hadOnlyDemoSelection =
+        state.selectedDocumentIds.length > 0 &&
+        state.selectedDocumentIds.every((id) => id.startsWith("doc-demo-"));
       const filteredSelection = state.selectedDocumentIds.filter((id) =>
         validIds.has(id)
       );
+      const nextSelection =
+        filteredSelection.length > 0
+          ? filteredSelection
+          : hadOnlyDemoSelection
+          ? Array.from(validIds)
+          : [];
       return {
         documents: docs,
-        selectedDocumentIds: filteredSelection,
+        selectedDocumentIds: nextSelection,
       };
     }),
 

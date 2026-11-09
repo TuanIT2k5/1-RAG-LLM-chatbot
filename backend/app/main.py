@@ -13,6 +13,8 @@ from app.api.routes.health_routes import router as health_router
 from app.core.config import BACKEND_DIR, settings
 from app.core.exceptions import AppException
 from app.core.logging import get_logger, setup_logging
+from app.database import models as _models  # noqa: F401
+from app.database.connection import Base, engine
 
 logger = get_logger(__name__)
 
@@ -32,6 +34,9 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
     upload_path.mkdir(parents=True, exist_ok=True)
     chroma_path.mkdir(parents=True, exist_ok=True)
+
+    # Đảm bảo các bảng dữ liệu (users, documents, conversations, messages, message_sources) đã được tạo
+    Base.metadata.create_all(bind=engine)
 
     logger.info(
         "Khởi động %s v%s thành công tại cổng %d",
@@ -82,6 +87,21 @@ def create_app() -> FastAPI:
                 "error_code": exc.error_code,
                 "message": exc.message,
                 "details": exc.details,
+            },
+        )
+
+    @app.exception_handler(Exception)
+    async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+        logger.exception(
+            "Unhandled Exception (HTTP 500) tại %s: %s",
+            request.url.path,
+            exc,
+        )
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error_code": "INTERNAL_SERVER_ERROR",
+                "message": f"Lỗi xử lý nội bộ trên máy chủ: {exc}",
             },
         )
 
