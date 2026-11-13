@@ -105,7 +105,7 @@ def _create_test_environment(
         )
         llm_service = LLMService(
             provider="gemini",
-            api_key="AIzaSyTestValidKeyForVerification",
+            api_key="test_valid_key_for_verification",
             model="gemini-3.8-flash",
             temperature=0.1,
             timeout_seconds=5.0,

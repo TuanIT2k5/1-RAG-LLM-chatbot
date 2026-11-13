@@ -10,6 +10,29 @@ ZERO_WIDTH_PATTERN = re.compile(r"[\u200b-\u200f\u202a-\u202e\u2060\ufeff\u00ad]
 # Các ký tự điều khiển ASCII/Unicode (trừ \n và \t)
 CONTROL_CHARS_PATTERN = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]")
 
+# [Phần 2 - Bước 2] Biểu thức chính quy nhận diện ký tự hợp lệ (chữ cái Việt/Anh, chữ số và dấu câu chuẩn)
+VALID_VIETNAMESE_TEXT_CHAR_PATTERN = re.compile(
+    r"[a-zA-Z0-9"
+    r"àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ"
+    r".,;:!?\(\)\[\]\{\}\-\–\—\/'\"“”‘’%$+=@#&\*_<>|~`^\\]",
+    flags=re.IGNORECASE | re.UNICODE,
+)
+
+# Mẫu nhận diện các ký tự ngoại lai (Cyrillic, IPA mở rộng, Hy Lạp) xuất hiện khi PDF bị hỏng bảng mã ToUnicode CMap
+# Ví dụ điển hình: 'LRK /ЎX RРM 1]750 Pɧ QШX LЖ G WЮ Hо PMЖY UYER LЖ TLФ FMЎR RLϴX'
+MOJIBAKE_FOREIGN_GLYPH_PATTERN = re.compile(r"[\u0250-\u02af\u0370-\u052f]")
+
+# Mẫu nhận diện từ bị dịch mã ASCII (chứa dấu ngoặc vuông hoặc số kẹp giữa cụm chữ in hoa như '4]XLSR', '1]750', '[SVPH')
+SHIFTED_ASCII_TOKEN_PATTERN = re.compile(r"(?:\b\d\][A-Z0-9]{2,}\b|\[[A-Z]{3,}\b|\b[A-Z]{2,}\][A-Z]{2,}\b)")
+
+MOJIBAKE_DOCUMENT_ERROR_MESSAGE = (
+    "Tài liệu bị lỗi mã hóa font chữ. Vui lòng in lại file PDF hoặc sử dụng file khác."
+)
+
+MOJIBAKE_CHAT_REFUSAL_MESSAGE = (
+    "Xin lỗi, nội dung tài liệu tại đoạn này đang bị lỗi mã hóa chữ nên tôi không thể trích xuất được thông tin."
+)
+
 # Mẫu nhận diện dòng chỉ chứa số trang hoặc đường kẻ trang trí vô nghĩa ([SP2-04.4])
 STANDALONE_PAGE_NUMBER_PATTERNS = [
     # Số trang đơn thuần: "12", "- 12 -", "— 12 —", "[12]", "(12)"
@@ -175,6 +198,41 @@ def clean_text(text: str, merge_lines: bool = True) -> str:
         step4_merged = step3_filtered
 
     return remove_control_chars_and_normalize_spaces(step4_merged)
+
+
+def is_gibberish(text: str, min_valid_ratio: float = 0.6) -> bool:
+    """
+    [Phần 2 - Bước 2] Phát hiện văn bản rác hoặc bị lỗi hỏng mã hóa phông chữ (Mojibake / Corrupted CMap):
+    1. Loại bỏ toàn bộ khoảng trắng khỏi cả tử số và mẫu số trước khi tính tỷ lệ ký tự hợp lệ
+       (khắc phục lỗi lệch mẫu số khi đếm \\s). Nếu tỷ lệ hợp lệ < min_valid_ratio (60%) -> True.
+    2. Kiểm tra mật độ ký tự ngoại lai (Cyrillic/IPA/Hy Lạp: Ш, І, К, Ю, Ў, Ж, Р, ɧ, ɺ, ϴ)
+       và các cụm từ lệch mã ASCII ('4]XLSR', '1]750', '[SVPH') đặc trưng của PDF lỗi ToUnicode CMap.
+    """
+    if not text:
+        return True
+
+    normalized = normalize_unicode_nfc(text)
+    non_whitespace_text = re.sub(r"\s+", "", normalized)
+    total_chars = len(non_whitespace_text)
+    if total_chars == 0:
+        return True
+
+    # 1. Tính tỷ lệ ký tự tiếng Việt, tiếng Anh, chữ số và dấu câu thông dụng
+    valid_chars = len(VALID_VIETNAMESE_TEXT_CHAR_PATTERN.findall(non_whitespace_text))
+    valid_ratio = valid_chars / total_chars
+    if valid_ratio < min_valid_ratio:
+        return True
+
+    # 2. Phát hiện lỗi lệch bảng mã ToUnicode CMap (như 'LRK /ЎX RРM 1]750 Pɧ QШX LЖ...')
+    foreign_glyph_count = len(MOJIBAKE_FOREIGN_GLYPH_PATTERN.findall(non_whitespace_text))
+    if total_chars >= 20 and (foreign_glyph_count / total_chars) >= 0.03:
+        return True
+
+    shifted_tokens = SHIFTED_ASCII_TOKEN_PATTERN.findall(normalized)
+    if len(shifted_tokens) >= 2:
+        return True
+
+    return False
 
 
 def clean_extracted_units(

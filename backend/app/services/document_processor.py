@@ -151,6 +151,26 @@ def extract_pdf(
             },
         )
 
+    # [Phần 2 - Bước 3] Kiểm tra phát hiện văn bản rác / lỗi mã hóa font chữ (Mojibake)
+    from app.utils.text_cleaner import MOJIBAKE_DOCUMENT_ERROR_MESSAGE, is_gibberish
+
+    combined_pdf_text = "\n".join(unit.text for unit in extracted_pages)
+    if is_gibberish(combined_pdf_text):
+        logger.warning(
+            "Phát hiện lỗi mã hóa font chữ (Mojibake/Gibberish) trong tệp PDF '%s' (id=%s).",
+            effective_filename,
+            doc_id_str,
+        )
+        raise ExtractionFailedException(
+            message=MOJIBAKE_DOCUMENT_ERROR_MESSAGE,
+            details={
+                "filename": effective_filename,
+                "document_id": doc_id_str,
+                "flag": "GIBBERISH_FONT_ENCODING",
+                "error": "Lỗi Font chữ - Không thể đọc tài liệu",
+            },
+        )
+
     logger.info(
         "Trích xuất PDF thành công: filename='%s', id=%s, pages_with_text=%d, total_chars=%d",
         effective_filename,

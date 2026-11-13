@@ -6,7 +6,7 @@ import uuid
 from app.core.logging import get_logger
 from app.schemas.chat_schema import SourceCitation
 from app.services.context_builder import SourceMapEntry
-from app.services.llm_service import NO_CONTEXT_REFUSAL_MESSAGE
+from app.services.llm_service import NO_CONTEXT_REFUSAL_MESSAGE, clean_robotic_phrases
 from app.utils.text_cleaner import normalize_unicode_nfc
 
 logger = get_logger(__name__)
@@ -221,9 +221,10 @@ class CitationService:
             _replace_citation_group,
             cleaned_answer,
         )
-        # Dọn dẹp khoảng trắng thừa trước dấu câu sau khi xóa thẻ ảo giác
+        # Dọn dẹp khoảng trắng thừa trước dấu câu sau khi xóa thẻ ảo giác và lọc bỏ câu mở đầu rập khuôn (Bước 5)
         verified_answer = re.sub(r"\s+([.,;!?])", r"\1", verified_answer)
         verified_answer = re.sub(r"[ \t]{2,}", " ", verified_answer).strip()
+        verified_answer = clean_robotic_phrases(verified_answer)
 
         if removed_source_ids:
             logger.warning(
